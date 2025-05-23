@@ -15,3 +15,8 @@ guest:guest@localhost:5672 adalah bagian dari URL koneksi yang digunakan untuk t
 ![image](images/result.png)
 
 Terdapat hingga 61 queue yang tercatat di komputer saya. Saya telah menjalankan publisher sebanyak 15 kali, dan karena pesan yang dikirimkan berlangsung sangat cepat, sementara subscriber tidak dapat menerima pesan dengan cukup cepat akibat adanya jeda waktu (sleep), maka RabbitMQ menyimpan pesan-pesan tersebut terlebih dahulu di dalam antrean.
+
+#### Running at least three subscribers
+![image2](images/result-2.png)
+
+Saya melakukan percobaan dengan menjalankan tiga instance subscriber secara bersamaan. Ketiganya saling berbagi pesan yang masuk karena secara default RabbitMQ menerapkan metode distribusi round-robin, di mana setiap subscriber menerima bagian pesan secara bergiliran dan merata—sekitar sepertiga dari total pesan yang dikirim. Pendekatan ini memungkinkan pemrosesan paralel sehingga antrean pesan dapat dikosongkan dengan lebih cepat. Namun, pola distribusi seperti ini kurang sesuai jika tujuan kita adalah agar setiap subscriber menerima seluruh pesan yang sama. Untuk mencapai hal tersebut, kita dapat mengganti pendekatannya menjadi metode fanout, yang memungkinkan semua subscriber menerima salinan dari setiap pesan secara bersamaan.
